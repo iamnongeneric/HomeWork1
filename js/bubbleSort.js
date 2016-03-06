@@ -4,30 +4,29 @@ var bubbleSort = function bubbleSortF (array) {
   var innerCounter = 0;
 
   function loop () {
-
+    //outer loop
     if (outerCounter > 0) {
-
+      //inner loop
       if (innerCounter < outerCounter) {
-
         if (array[innerCounter] > array[innerCounter + 1]) {
           swap(array, innerCounter, innerCounter + 1);
         }
         innerCounter++;
-
       }
 
       else {
-
         outerCounter--;
         innerCounter = 0;
-
       }
     }
-
     else return;
   }
 
-  return loop;
+  return {
+    loop : loop,
+    currentElement : innerCounter,
+    currentEndOfLoop : outerCounter
+  };
 }
 
 var swap = function swapF (array, firstIndex, secondIndex) {
