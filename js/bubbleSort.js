@@ -24,13 +24,17 @@ var bubbleSort = function bubbleSortF (array) {
 
   return {
     loop : loop,
-    currentElement : innerCounter,
-    currentEndOfLoop : outerCounter
+    getCurrentElement : function () {
+      return innerCounter;
+    },
+    getCurrentEndOfLoop : function () {
+      return outerCounter;
+    }
   };
 }
 
 var swap = function swapF (array, firstIndex, secondIndex) {
   var temp = array[firstIndex];
   array[firstIndex] = array[secondIndex];
-  arra[secondIndex] = temp;
+  array[secondIndex] = temp;
 }
