@@ -29,6 +29,9 @@ var bubbleSort = function bubbleSortF (array) {
     },
     getCurrentEndOfLoop : function () {
       return outerCounter;
+    },
+    getList : function () {
+      return array;
     }
   };
 }
