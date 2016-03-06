@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#execution_section, #error_message {
+  display: none;
+}
