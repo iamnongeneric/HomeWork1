@@ -1,5 +1,6 @@
 var buttonApply = document.getElementById('button_apply');
 var buttonNext = document.getElementById('button_next');
+var buttonAutoPlay = document.getElementById('button_autoplay');
 var viewSection, bubbleSortObject;
 
 var checkUserInput = function checkUserInputF (input) {
@@ -33,7 +34,6 @@ var respondToUserInput = function respondToUserInputF() {
   var executionSection = document.getElementById('execution_section');
   var errorMessage = document.getElementById('error_message');
   if (checkUserInput(input)) {
-    //create li elements from input and set execustion section visible
     bubbleSortObject = bubbleSort(input);
     setListView(input);
     button_apply.disabled = true;
@@ -41,8 +41,6 @@ var respondToUserInput = function respondToUserInputF() {
     errorMessage.style.display = 'none';
     console.log(input);
   } else {
-    //show error section
-    alert(input);
     errorMessage.style.display = 'block';
   }
 }
@@ -57,40 +55,66 @@ var updateList = function updateListF (listOfNodes) {
 var controlListChanges = function controlListChangesF () {
   var listOfNodes = viewSection.getElementsByTagName('li');
   var current = bubbleSortObject.getCurrentElement();
+  var next = current + 1;
   var currentNode = listOfNodes[current];
-  var next = bubbleSortObject.getCurrentElement() + 1;
   var nextNode = listOfNodes[next];
-  var end = bubbleSortObject.getCurrentEndOfLoop();
   var nums = bubbleSortObject.getList();
-  updateList(listOfNodes)
-  if (!nextNode || nextNode.className == "final") {
-    currentNode.className = "final";
-    bubbleSortObject.loop();
-  }
 
-  if (!nextNode.className) {
-    if (currentNode.className != "current") {
-      currentNode.className = "current";
-      nextNode.className = "current";
-      bubbleSortObject.loop();
-    }
-    else {
-      listOfNodes[current - 1].className = "";
-      nextNode.className = "current";
-    }
+  if (current != 0) {
+    //убирает класс у пройденного элемента
+    listOfNodes[current - 1].className = "";
   }
 
   if (nums[current] > nums[next]) {
+    //для понимания читать от последнего условия к первому
     if (currentNode.className == "swapped") {
+      //выполнить итерацию и идти дальге
       bubbleSortObject.loop();
       updateList(listOfNodes);
     }
-    else {
+    if (nextNode.className == "current") {
+      //затем показать, что текущий больше следующего
       currentNode.className = "swapped";
       nextNode.className = "swapped";
     }
+    else {
+      //просто подсветить текущие элементы
+      currentNode.className = "current";
+      nextNode.className = "current";
+      return;
+    }
+  }
+
+  else {
+    if (!nextNode || nextNode.className == "final") {
+      currentNode.className = "final";
+    } else {
+      currentNode.className = "current";
+      nextNode.className = "current";
+    }
+  }
+
+  if (currentNode.className == "current" || currentNode.className == "final") {
+    bubbleSortObject.loop();
+    updateList(listOfNodes);
+  }
+}
+
+var ifDone = function ifDoneF(nodes) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].className != "final") {
+      return false;
+    }
+  }
+  return true;
+}
+
+var autoPlay = function autoPlayF () {
+  while (!ifDone(viewSection.getElementsByTagName('li'))) {
+    controlListChanges();
   }
 }
 
 buttonApply.onclick = respondToUserInput;
 buttonNext.onclick = controlListChanges;
+buttonAutoPlay.onclick = autoPlay;
