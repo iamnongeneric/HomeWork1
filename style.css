@@ -64,13 +64,13 @@ input, button {
   text-align: center;
 }
 
-#nums_list {
+ul {
   list-style: none;
   margin: 30px auto;
   display: inline-block;
 }
 
-#nums_list li {
+ul li {
   display: inline;
   font-size: 20px;
   border: 2px solid #000000;
@@ -89,4 +89,16 @@ input, button {
 #buttons button {
   background: #ffa817;
   margin: 10px;
+}
+
+.current {
+  background: #ffa817;
+}
+
+.swapped {
+  background: #ff0000;
+}
+
+.final {
+  background: #7f8c8d;
 }
