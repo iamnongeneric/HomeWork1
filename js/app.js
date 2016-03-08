@@ -47,10 +47,49 @@ var respondToUserInput = function respondToUserInputF() {
   }
 }
 
+var updateList = function updateListF (listOfNodes) {
+  var list = bubbleSortObject.getList();
+  for (var i = 0; i < listOfNodes.length; i++) {
+    listOfNodes[i].innerHTML = list[i];
+  }
+}
+
 var controlListChanges = function controlListChangesF () {
-  viewSection.innerHTML = "";
-  bubbleSortObject.loop();
-  setListView(bubbleSortObject.getList());
+  var listOfNodes = viewSection.getElementsByTagName('li');
+  var current = bubbleSortObject.getCurrentElement();
+  var currentNode = listOfNodes[current];
+  var next = bubbleSortObject.getCurrentElement() + 1;
+  var nextNode = listOfNodes[next];
+  var end = bubbleSortObject.getCurrentEndOfLoop();
+  var nums = bubbleSortObject.getList();
+  updateList(listOfNodes)
+  if (!nextNode || nextNode.className == "final") {
+    currentNode.className = "final";
+    bubbleSortObject.loop();
+  }
+
+  if (!nextNode.className) {
+    if (currentNode.className != "current") {
+      currentNode.className = "current";
+      nextNode.className = "current";
+      bubbleSortObject.loop();
+    }
+    else {
+      listOfNodes[current - 1].className = "";
+      nextNode.className = "current";
+    }
+  }
+
+  if (nums[current] > nums[next]) {
+    if (currentNode.className == "swapped") {
+      bubbleSortObject.loop();
+      updateList(listOfNodes);
+    }
+    else {
+      currentNode.className = "swapped";
+      nextNode.className = "swapped";
+    }
+  }
 }
 
 buttonApply.onclick = respondToUserInput;
