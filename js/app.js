@@ -27,6 +27,9 @@ var respondToUserInput = function respondToUserInputF() {
   input = input.filter(function (item) {
     return /\S/.test(item);
   });
+  input = input.map(function (item) {
+    return parseInt(item, 10);
+  });
   var executionSection = document.getElementById('execution_section');
   var errorMessage = document.getElementById('error_message');
   if (checkUserInput(input)) {
@@ -36,6 +39,7 @@ var respondToUserInput = function respondToUserInputF() {
     button_apply.disabled = true;
     executionSection.style.display = 'block';
     errorMessage.style.display = 'none';
+    console.log(input);
   } else {
     //show error section
     alert(input);
