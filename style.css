@@ -10,7 +10,6 @@ html, body {
 
 body {
   font-family: sans-serif;
-  color: #ecf0f1;
 }
 
 .container {
@@ -23,6 +22,7 @@ h2 {
   text-align: center;
   border-bottom: 5px solid #ffa817;
   padding: 10px;
+  color: #ecf0f1;
 }
 
 #input_section {
@@ -43,6 +43,7 @@ input, button {
 #button_apply {
   background: #ffa817;
   width: 10%;
+  margin-left: 2.5%;
 }
 
 #nums_input {
@@ -51,15 +52,41 @@ input, button {
   margin-left: 2.5%;
 }
 
-#button_apply {
-  margin-left: 2.5%;
-}
-
 #execution_section, #error_message {
   display: none;
 }
 
 #execution_section {
-  margin-top: 20px;
+  position: absolute;
+  bottom: 0;
+  height: 60%;
   width: 100%;
+  text-align: center;
+}
+
+#nums_list {
+  list-style: none;
+  margin: 30px auto;
+  display: inline-block;
+}
+
+#nums_list li {
+  display: inline;
+  font-size: 20px;
+  border: 2px solid #000000;
+  padding: 5px 10px;
+  color: #000000;
+  background: #ecf0f1;
+}
+
+#buttons {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  clear: both;
+}
+
+#buttons button {
+  background: #ffa817;
+  margin: 10px;
 }
