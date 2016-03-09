@@ -66,6 +66,9 @@ var respondToUserInput = function respondToUserInputF() {
 
 var updateList = function updateListF (listOfNodes, values) {
   for (var i = 0; i < values.length; i++) {
+    if (i == listOfNodes.length) {
+      return;
+    }
     listOfNodes[i].innerHTML = values[i];
   }
 }
