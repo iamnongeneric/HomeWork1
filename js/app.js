@@ -24,7 +24,8 @@ var setListView = function setListViewF (input) {
 }
 
 var respondToUserInput = function respondToUserInputF() {
-  var input = document.getElementById('nums_input').value.trim().split(" ");
+  var inputField = document.getElementById('nums_input');
+  var input = inputField.value.trim().split(" ");
   input = input.filter(function (item) {
     return /\S/.test(item);
   });
@@ -42,6 +43,7 @@ var respondToUserInput = function respondToUserInputF() {
     console.log(input);
   } else {
     errorMessage.style.display = 'block';
+    inputField.value = "";
   }
 }
 
