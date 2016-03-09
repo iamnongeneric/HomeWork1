@@ -1,7 +1,12 @@
 var buttonApply = document.getElementById('button_apply');
 var buttonNext = document.getElementById('button_next');
 var buttonAutoPlay = document.getElementById('button_autoplay');
-var viewSection, bubbleSortObject;
+var buttonClear = document.getElementById('button_clear');
+var executionSection = document.getElementById('execution_section');
+var errorMessage = document.getElementById('error_message');
+var viewSection = document.getElementById('nums_list');
+var bubbleSortObject;
+var inputField;
 
 var checkUserInput = function checkUserInputF (input) {
   if (!input) return false;
@@ -15,7 +20,6 @@ var checkUserInput = function checkUserInputF (input) {
 }
 
 var setListView = function setListViewF (input) {
-  viewSection = document.getElementById('nums_list');
   input.forEach(function (item) {
     var li = document.createElement('li');
     li.appendChild(document.createTextNode(item));
@@ -23,35 +27,51 @@ var setListView = function setListViewF (input) {
   });
 }
 
-var respondToUserInput = function respondToUserInputF() {
-  var inputField = document.getElementById('nums_input');
-  var input = inputField.value.trim().split(" ");
-  input = input.filter(function (item) {
-    return /\S/.test(item);
-  });
-  input = input.map(function (item) {
+Array.prototype.convertToNumsArray = function convertToNumsArrayF () {
+  return this.map(function (item) {
     return parseInt(item, 10);
   });
-  var executionSection = document.getElementById('execution_section');
-  var errorMessage = document.getElementById('error_message');
+}
+
+Array.prototype.removeSpaces = function removeSpacesF () {
+  return this.filter(function (item) {
+    return /\S/.test(item);
+  });
+}
+
+var setDisplayValue = function setDisplayValue (element, value) {
+  element.style.display = value;
+}
+
+var createBubbleSortObject = function createBubbleSortObjectF (object, array) {
+  object = bubbleSort(array);
+  return object;
+}
+
+var respondToUserInput = function respondToUserInputF() {
+  var input;
+  inputField = document.getElementById('nums_input');
+  input = inputField.value.trim().split(" ").removeSpaces().convertToNumsArray();
   if (checkUserInput(input)) {
-    bubbleSortObject = bubbleSort(input);
-    setListView(input);
+    bubbleSortObject = createBubbleSortObject(bubbleSortObject, input);
     button_apply.disabled = true;
-    executionSection.style.display = 'block';
-    errorMessage.style.display = 'none';
-    console.log(input);
+    setListView(input);
+    setDisplayValue(executionSection, 'block');
+    setDisplayValue(errorMessage, 'none');
   } else {
-    errorMessage.style.display = 'block';
+    setDisplayValue(errorMessage, 'block');
     inputField.value = "";
   }
 }
 
-var updateList = function updateListF (listOfNodes) {
-  var list = bubbleSortObject.getList();
-  for (var i = 0; i < listOfNodes.length; i++) {
-    listOfNodes[i].innerHTML = list[i];
+var updateList = function updateListF (listOfNodes, values) {
+  for (var i = 0; i < values.length; i++) {
+    listOfNodes[i].innerHTML = values[i];
   }
+}
+
+var setClass = function setClassF (element, cls) {
+  element.className = cls || "";
 }
 
 var controlListChanges = function controlListChangesF () {
@@ -64,41 +84,41 @@ var controlListChanges = function controlListChangesF () {
 
   if (current != 0) {
     //убирает класс у пройденного элемента
-    listOfNodes[current - 1].className = "";
+    setClass(listOfNodes[current - 1]);
   }
 
   if (nums[current] > nums[next]) {
     //для понимания читать от последнего условия к первому
     if (currentNode.className == "swapped") {
-      //выполнить итерацию и идти дальге
+      //выполнить итерацию и идти дальше
       bubbleSortObject.loop();
-      updateList(listOfNodes);
+      updateList(listOfNodes, bubbleSortObject.getList());
     }
     if (nextNode.className == "current") {
       //затем показать, что текущий больше следующего
-      currentNode.className = "swapped";
-      nextNode.className = "swapped";
+      setClass(currentNode, "swapped");
+      setClass(nextNode, "swapped");
     }
     else {
       //просто подсветить текущие элементы
-      currentNode.className = "current";
-      nextNode.className = "current";
+      setClass(currentNode, "current");
+      setClass(nextNode, "current");
       return;
     }
   }
 
   else {
     if (!nextNode || nextNode.className == "final") {
-      currentNode.className = "final";
+      setClass(currentNode, "final");
     } else {
-      currentNode.className = "current";
-      nextNode.className = "current";
+      setClass(currentNode, "current");
+      setClass(nextNode, "current");
     }
   }
 
   if (currentNode.className == "current" || currentNode.className == "final") {
     bubbleSortObject.loop();
-    updateList(listOfNodes);
+    updateList(listOfNodes, bubbleSortObject.getList());
   }
 }
 
@@ -112,11 +132,24 @@ var ifDone = function ifDoneF(nodes) {
 }
 
 var autoPlay = function autoPlayF () {
-  while (!ifDone(viewSection.getElementsByTagName('li'))) {
-    controlListChanges();
+  var nodes = viewSection.getElementsByTagName('li');
+  controlListChanges();
+  if (!ifDone(nodes)) {
+    setTimeout(function () {
+      autoPlay();
+    }, 1000);
   }
+}
+
+var clear = function clearF () {
+  viewSection.innerHTML = "";
+  setDisplayValue(executionSection, "none");
+  buttonApply.disabled = false;
+  inputField = document.getElementById('nums_input');
+  inputField.value = "";
 }
 
 buttonApply.onclick = respondToUserInput;
 buttonNext.onclick = controlListChanges;
 buttonAutoPlay.onclick = autoPlay;
+buttonClear.onclick = clear;
