@@ -56,12 +56,16 @@ input, button {
   display: none;
 }
 
-#execution_section {
+#execution_section, #error_message {
   position: absolute;
   bottom: 0;
   height: 60%;
   width: 100%;
   text-align: center;
+}
+
+#error_message h3 {
+  color: #ecf0f1;
 }
 
 ul {
