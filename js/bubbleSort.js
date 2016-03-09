@@ -2,17 +2,14 @@ var bubbleSort = function bubbleSortF (array) {
 
   var outerCounter = array.length - 1;
   var innerCounter = 0;
-  var swapped;
 
   function loop () {
     //outer loop
     if (outerCounter > 0) {
       //inner loop
-      swapped = false;
       if (innerCounter < outerCounter) {
         if (array[innerCounter] > array[innerCounter + 1]) {
           swap(array, innerCounter, innerCounter + 1);
-          swapped = true;
         }
         innerCounter++;
       }
