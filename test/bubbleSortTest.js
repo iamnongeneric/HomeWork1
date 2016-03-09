@@ -15,9 +15,9 @@ describe('Properties of returned object', function () {
   function () {
     expect(testObj.getCurrentElement()).to.be.a('number');
   });
-  it('should have a getCurrentEndOfLoop property, counter of the outer loop',
+  it('should have a getList property, the whole array',
   function () {
-    expect(testObj.getCurrentEndOfLoop()).to.be.a('number');
+    expect(testObj.getList()).to.be.a('array');
   });
 });
 
@@ -28,3 +28,11 @@ describe('Check the work of loop function', function () {
     expect(testObj.getCurrentElement()).to.equal(1);
   });
 });
+
+describe('Does the getList function return correct value', function () {
+  var testArr = [5, 6, 3, 2, 1];
+  var testObj = bubbleSort(testArr);
+  it('should be the same array that was given as argument', function () {
+    expect(testObj.getList()).to.deep.equal(testArr);
+  })
+})
