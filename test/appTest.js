@@ -22,4 +22,21 @@ describe('Test of checking user input function', function () {
   it('should return false if there is no argument at all', function () {
     expect(checkUserInput()).to.equal(false);
   });
-})
+});
+
+describe('Array', function () {
+  describe('#removeSpaces', function() {
+    var arrWithSpaces = [" ", 5, "hey", " ", "chai"];
+    var arrWithoutSpaces = [5, "hey", "chai"];
+    it('should remove spaces from array', function () {
+      expect(arrWithSpaces.removeSpaces()).to.deep.equal(arrWithoutSpaces);
+    });
+  });
+  describe('#convertToNumsArray', function () {
+    var testArr = ["5", "you can't", "-1", null];
+    var probRes = [5, NaN, -1, NaN];
+    it('should convert given array to array of numbers', function () {
+      expect(testArr.convertToNumsArray()).to.deep.equal(probRes);
+    });
+  });
+});
