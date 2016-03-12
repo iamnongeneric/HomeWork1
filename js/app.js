@@ -27,6 +27,14 @@ var setListView = function setListViewF (input) {
   });
 }
 
+var setClass = function setClassF (element, cls) {
+  element.className = cls || "";
+}
+
+var setDisplayValue = function setDisplayValue (element, value) {
+  element.style.display = value;
+}
+
 Array.prototype.convertToNumsArray = function convertToNumsArrayF () {
   return this.map(function (item) {
     return parseInt(item, 10);
@@ -37,10 +45,6 @@ Array.prototype.removeSpaces = function removeSpacesF () {
   return this.filter(function (item) {
     return /\S/.test(item);
   });
-}
-
-var setDisplayValue = function setDisplayValue (element, value) {
-  element.style.display = value;
 }
 
 var createBubbleSortObject = function createBubbleSortObjectF (object, array) {
@@ -73,10 +77,6 @@ var updateList = function updateListF (listOfNodes, values) {
   }
 }
 
-var setClass = function setClassF (element, cls) {
-  element.className = cls || "";
-}
-
 var controlListChanges = function controlListChangesF () {
   var listOfNodes = viewSection.getElementsByTagName('li');
   var current = bubbleSortObject.getCurrentElement();
@@ -94,8 +94,7 @@ var controlListChanges = function controlListChangesF () {
     //для понимания читать от последнего условия к первому
     if (currentNode.className == "swapped") {
       //выполнить итерацию и идти дальше
-      bubbleSortObject.loop();
-      updateList(listOfNodes, bubbleSortObject.getList());
+      makeAStep(listOfNodes);
     }
     if (nextNode.className == "current") {
       //затем показать, что текущий больше следующего
@@ -120,9 +119,13 @@ var controlListChanges = function controlListChangesF () {
   }
 
   if (currentNode.className == "current" || currentNode.className == "final") {
-    bubbleSortObject.loop();
-    updateList(listOfNodes, bubbleSortObject.getList());
+    makeAStep(listOfNodes);
   }
+}
+
+var makeAStep = function makeAStepF (listOfNodes) {
+  bubbleSortObject.loop();
+  updateList(listOfNodes, bubbleSortObject.getList());
 }
 
 var ifDone = function ifDoneF(nodes) {
@@ -137,6 +140,7 @@ var ifDone = function ifDoneF(nodes) {
 var autoPlay = function autoPlayF () {
   var nodes = viewSection.getElementsByTagName('li');
   controlListChanges();
+  buttonAutoPlay.disabled = true;
   if (!ifDone(nodes)) {
     setTimeout(function () {
       autoPlay();
